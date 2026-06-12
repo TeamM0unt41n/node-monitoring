@@ -6,4 +6,5 @@
     - client
 
   roles:
+    - docker
     - client
