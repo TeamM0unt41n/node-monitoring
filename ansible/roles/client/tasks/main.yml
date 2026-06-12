@@ -1,0 +1,13 @@
+---
+- name: Clone repository
+  ansible.builtin.git:
+    repo: "https://github.com/TeamM0unt41n/node-monitoring.git"
+    dest: "/app/"
+    recursive: true
+    force: true
+
+- name: Startup
+  become: true
+  community.docker.docker_compose_v2:
+    project_src: "/app/clients/"
+    state: present

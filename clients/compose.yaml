@@ -1,0 +1,78 @@
+services:
+  # cadvisor:
+  #   restart: unless-stopped
+  #   image: gcr.io/cadvisor/cadvisor
+  #   volumes:
+  #     - /:/rootfs
+  #     - /var/run:/var/run
+  #     - /sys:/sys
+  #     - /var/lib/docker/:/var/lib/docker
+  #     - /dev/disk/:/dev/disk
+  #   devices:
+  #     - /dev/kmsg
+  #   command:
+  #     - --store_container_labels=true
+  #   networks:
+  #     - monitoring
+    
+  node_exporter:
+    image: prom/node-exporter
+    restart: unless-stopped
+    volumes:
+      - /proc:/host/proc:ro
+      - /sys:/host/sys:ro
+      - /:/rootfs:ro
+    command:
+      - --path.procfs=/host/proc
+      - --path.rootfs=/rootfs
+      - --path.sysfs=/host/sys
+      - --collector.filesystem.mount-points-exclude=^/(sys|proc|dev|host|etc)($$|/)
+    networks:
+      - monitoring
+      
+  prometheus:
+    image: prom/prometheus:v3.1.0
+    volumes:
+      - ./prometheus/config.yml:/etc/prometheus/prometheus.yml
+    networks:
+      - monitoring
+    # depends_on:
+    #   - cadvisor
+    command:
+      - --config.file=/etc/prometheus/prometheus.yml
+      - --storage.tsdb.path=/prometheus
+      - --web.console.libraries=/usr/share/prometheus/console_libraries
+      - --web.console.templates=/usr/share/prometheus/consoles
+      - --web.external-url=/prometheus/
+    ports:
+      - 9090:9090
+    
+  grafana:
+    restart: unless-stopped
+    image: grafana/grafana:11.5.1
+    environment:
+      - GF_PATHS_PROVISIONING=/etc/grafana/provisioning
+      - DS_PROMETHEUS=prometheus
+      - GF_SERVER_ROOT_URL=/grafana/
+      - GF_SERVER_SERVE_FROM_SUB_PATH=true
+      - GF_SECURITY_ALLOW_EMBEDDING=true
+      - GF_AUTH_ANONYMOUS_ENABLED=true
+      - GF_AUTH_ANONYMOUS_ORG_NAME=Main Org.
+      - GF_AUTH_ANONYMOUS_ORG_ROLE=Viewer
+    ports:
+      - 3000:3000
+    volumes:
+      - grafana-data:/var/lib/grafana
+      - ./graphana/datasources.yml:/etc/grafana/provisioning/datasources/datasources.yml
+      - ./graphana/dashboards/:/etc/grafana/provisioning/dashboards/files/
+      - ./graphana/default.yaml:/etc/grafana/provisioning/dashboards/default.yaml
+    networks:
+      - monitoring
+    depends_on:
+      - prometheus
+
+  
+networks:
+  monitoring: null
+volumes:
+  grafana-data: null
