@@ -1,4 +1,14 @@
 ---
+- name: Update apt cache
+  ansible.builtin.apt:
+    update_cache: true
+
+- name: Install git
+  ansible.builtin.apt:
+    name:
+      - git
+    state: present
+    
 - name: Clone repository
   ansible.builtin.git:
     repo: "https://github.com/TeamM0unt41n/node-monitoring.git"

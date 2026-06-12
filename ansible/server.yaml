@@ -6,4 +6,5 @@
     - server
 
   roles:
+    - docker
     - server
