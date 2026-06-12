@@ -1,0 +1,9 @@
+---
+- name: Install clients
+  become: true
+
+  hosts:
+    - client
+
+  roles:
+    - client
