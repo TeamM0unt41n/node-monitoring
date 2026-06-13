@@ -7,27 +7,27 @@ scrape_configs:
   - job_name: "monitoring"
     static_configs:
       - targets:
-          - "10.2.1.101:9100"
+          - "10.67.1.2:9100"
         labels:
           env: "vuln1"
 
       - targets:
-          - "10.2.1.102:9100"
+          - "10.67.2.2:9100"
         labels:
           env: "vuln2"
 
       - targets:
-          - "10.2.1.103:9100"
+          - "10.67.3.2:9100"
         labels:
           env: "vuln3"
 
       - targets:
-          - "10.2.1.104:9100"   # Host D
+          - "10.67.1.3:9100"   # Host D
         labels:
           env: "tooling1"
 
       - targets:
-          - "10.2.1.105:9100"   # Host D
+          - "10.67.2.3:9100"   # Host D
         labels:
           env: "tooling2"
 
