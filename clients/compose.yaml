@@ -1,19 +1,19 @@
 services:
-  # cadvisor:
-  #   restart: unless-stopped
-  #   image: gcr.io/cadvisor/cadvisor
-  #   volumes:
-  #     - /:/rootfs
-  #     - /var/run:/var/run
-  #     - /sys:/sys
-  #     - /var/lib/docker/:/var/lib/docker
-  #     - /dev/disk/:/dev/disk
-  #   devices:
-  #     - /dev/kmsg
-  #   command:
-  #     - --store_container_labels=true
-  #   networks:
-  #     - monitoring
+  cadvisor:
+    restart: unless-stopped
+    image: gcr.io/cadvisor/cadvisor
+    volumes:
+      - /:/rootfs
+      - /var/run:/var/run
+      - /sys:/sys
+      - /var/lib/docker/:/var/lib/docker
+      - /dev/disk/:/dev/disk
+    devices:
+      - /dev/kmsg
+    command:
+      - --store_container_labels=true
+    networks:
+      - monitoring
     
   node_exporter:
     image: prom/node-exporter
