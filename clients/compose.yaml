@@ -12,8 +12,8 @@ services:
       - /dev/kmsg
     command:
       - --store_container_labels=true
-    networks:
-      - monitoring
+    ports:
+      - 8080:8080
     
   node_exporter:
     image: prom/node-exporter
