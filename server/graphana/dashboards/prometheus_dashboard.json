@@ -140,7 +140,7 @@
       "targets": [
         {
           "editorMode": "code",
-          "expr": "(node_memory_MemTotal_bytes - node_memory_MemFree_bytes) / node_memory_MemTotal_bytes * 100",
+          "expr": "(node_memory_MemTotal_bytes - node_memory_MemFree_bytes - node_memory_Cached_bytes) / node_memory_MemTotal_bytes * 100",
           "legendFormat": "{{env}}",
           "range": true,
           "refId": "A"
