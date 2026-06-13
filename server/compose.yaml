@@ -36,6 +36,7 @@ services:
       - ./prometheus/config.yml:/etc/prometheus/prometheus.yml
     networks:
       - monitoring
+    restart: unless-stopped
     # depends_on:
     #   - cadvisor
     command:
